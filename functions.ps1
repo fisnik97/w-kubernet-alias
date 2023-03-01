@@ -7,12 +7,11 @@ function cx {
     if ($context) {
         switch ($context) {
             'dev' { $context = 'dev-env-context' }
-            'prod' { $context = 'prod-env-context' }
+            'prod' {
+                $context = 'prod-env-context'
+                Write-Host "You are switching to a PRODUCTION environment. Please be careful." -ForegroundColor Magenta
+            }
             Default { throw "Invalid context value: $context" }
-        }
-
-        if ($context -eq 'prod-env-context') {
-            Write-Host "You are switching to a PRODUCTION environment. Please be careful." -ForegroundColor Magenta
         }
 
         kubectl config use-context $context
