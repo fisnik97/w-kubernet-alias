@@ -67,3 +67,44 @@ function fwd {
 
     kubectl port-forward $podName "${hostPort}:${podPort}"
 }
+
+
+function nsp {
+    param(
+        [string]$context = $null
+    )
+
+    if ($context) {
+        switch ($context) {
+            'services' {$context = 'sol-services'}
+            'redis'  {$context = 'redis'}
+            'eventbus'  {$context = 'eventbus'}
+            'influx'  {$context = 'influx'}
+            Default { throw "Invalid context value: $context" }
+        }
+
+        kubectl config set-context --current --namespace  $context
+    } else {
+        kubectl config view --minify --output 'jsonpath={..namespace}'
+    }
+}
+
+function dpod {
+    param(
+        [string]$podName = $null,
+        [string]$textFilter = $null
+    )
+
+    if(-not $podName) {
+        Write-Error "Pod name is required"
+        return
+    }
+
+    if($textFilter){
+        kubectl describe pod $podName | Select-String -Pattern $textFilter
+    } else {
+        kubectl describe pod $podName
+    }
+}
+
+
