@@ -76,7 +76,7 @@ function nsp {
 
     if ($context) {
         switch ($context) {
-            'services' {$context = 'sol-services'}
+            'services' {$context = 'some-services'}
             'redis'  {$context = 'redis'}
             'eventbus'  {$context = 'eventbus'}
             'influx'  {$context = 'influx'}
